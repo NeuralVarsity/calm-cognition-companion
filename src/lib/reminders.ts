@@ -63,7 +63,7 @@ export type ReminderInput = {
 export function useSaveReminder(userId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...input }: ReminderInput & { id?: string }) => {
+    mutationFn: async ({ id, ...input }: ReminderInput & { id?: string | undefined }) => {
       if (!userId) throw new Error("You need to be signed in.");
       if (id) {
         const { error } = await supabase.from("reminders").update(input).eq("id", id);

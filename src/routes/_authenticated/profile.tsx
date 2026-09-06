@@ -35,7 +35,7 @@ function ProfilePage() {
   const queryClient = useQueryClient();
   const { data: profile } = useProfile(user?.id);
   const updateProfile = useUpdateProfile(user?.id);
-  const { settings, setSetting } = useSettings();
+  const { settings, update } = useSettings();
 
   const [form, setForm] = useState({
     full_name: "",
@@ -164,31 +164,31 @@ function ProfilePage() {
             label="Bigger text"
             description="Make all words larger."
             checked={settings.largeText}
-            onChange={(value) => setSetting("largeText", value)}
+            onChange={(value) => update({ largeText: value })}
           />
           <Toggle
             label="Stronger contrast"
             description="Darker text on plain backgrounds."
             checked={settings.highContrast}
-            onChange={(value) => setSetting("highContrast", value)}
+            onChange={(value) => update({ highContrast: value })}
           />
           <Toggle
             label="Alarm sound"
             description="Play a loud chime for reminders."
             checked={settings.alarmSound}
-            onChange={(value) => setSetting("alarmSound", value)}
+            onChange={(value) => update({ alarmSound: value })}
           />
           <Toggle
             label="Vibration"
             description="Buzz when a reminder rings."
             checked={settings.vibration}
-            onChange={(value) => setSetting("vibration", value)}
+            onChange={(value) => update({ vibration: value })}
           />
           <Toggle
             label="Read answers aloud"
             description="The assistant speaks its replies."
             checked={settings.speakAloud}
-            onChange={(value) => setSetting("speakAloud", value)}
+            onChange={(value) => update({ speakAloud: value })}
           />
         </div>
       </Panel>

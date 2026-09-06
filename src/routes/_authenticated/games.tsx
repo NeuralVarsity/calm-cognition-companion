@@ -56,7 +56,7 @@ function GamesPage() {
       if (!user?.id) return;
       const { error } = await supabase
         .from("game_scores")
-        .insert({ user_id: user.id, game, score });
+        .insert({ user_id: user.id, game_key: game, score });
       if (error) throw error;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["game-scores", user?.id] }),
@@ -65,7 +65,7 @@ function GamesPage() {
   const stats = useMemo(() => {
     const list = scores ?? [];
     const plays = list.length;
-    const best = list.reduce((max, row) => Math.max(max, row.score), 0);
+    const best = list.reduce((max, row) => Math.max(max, row.score ?? 0), 0);
     const todayPlays = list.filter(
       (row) => new Date(row.created_at).toDateString() === new Date().toDateString(),
     ).length;
