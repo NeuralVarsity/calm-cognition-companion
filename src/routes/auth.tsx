@@ -121,19 +121,31 @@ function AuthPage() {
 
   const verifyEmailCode = async (event: React.FormEvent) => {
     event.preventDefault();
+    const token = code.trim().replace(/\s+/g, "");
+    if (token.length !== 6) {
+      toast.error("Please type the 6 digit code from the email.");
+      return;
+    }
     setBusy(true);
-    const { error } = await supabase.auth.verifyOtp({
-      email: email.trim(),
-      token: code.trim(),
-      type: "signup",
-    });
+    let error = (await supabase.auth.verifyOtp({ email: email.trim(), token, type: "email" })).error;
+    if (error) {
+      error = (await supabase.auth.verifyOtp({ email: email.trim(), token, type: "signup" })).error;
+    }
     setBusy(false);
     if (error) {
-      toast.error("That code did not work. Please check it or ask for a new one.");
+      const message = error.message.toLowerCase();
+      if (message.includes("expired") || message.includes("not found") || message.includes("invalid")) {
+        toast.error(
+          "That code no longer works. If you already tapped the link in the email, your email is confirmed — just sign in below. Otherwise ask for a new code.",
+        );
+      } else {
+        toast.error(error.message);
+      }
       return;
     }
     toast.success("Your email is confirmed.");
   };
+
 
   const resendEmail = async () => {
     setBusy(true);
