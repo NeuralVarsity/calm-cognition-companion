@@ -334,6 +334,18 @@ function AuthPage() {
                 Confirm my email
               </Button>
               <ResendRow secondsLeft={secondsLeft} onResend={resendEmail} busy={busy} />
+              <Button
+                variant="link"
+                size="link"
+                type="button"
+                onClick={() => {
+                  setCode("");
+                  setMode("signin");
+                }}
+              >
+                I already confirmed — sign in
+              </Button>
+
             </form>
           ) : null}
 
